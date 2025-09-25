@@ -29,10 +29,10 @@ const requestRouter = require("./routes/request");
 
 const userRouter = require("./routes/user");
 
-app.use("/auth", authRouter);
-app.use("/profile", profileRouter);
-app.use("/request", requestRouter);
-app.use("/user", userRouter);
+app.use("api/auth", authRouter);
+app.use("api/profile", profileRouter);
+app.use("api/request", requestRouter);
+app.use("api/user", userRouter);
 
 connectDB()
   .then(() => {
