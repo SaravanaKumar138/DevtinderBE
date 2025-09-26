@@ -4,6 +4,8 @@ const app = express();
 
 const cors = require("cors");
 
+require("dotenv").config();
+
 app.use(
   cors({
     origin: "*",
@@ -37,7 +39,7 @@ app.use("/api/user", userRouter);
 connectDB()
   .then(() => {
     console.log("DB connected");
-    app.listen(7777, () => {
+    app.listen(process.env.PORT, () => {
       console.log("Server listening");
     });
   })

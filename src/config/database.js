@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const connectDB = async () => {
   await mongoose.connect(
-    "mongodb+srv://DevtinderProject:Dev%401234@firstnode.ufnnpwj.mongodb.net/devtinder?retryWrites=true&w=majority",
+    process.env.CONN_STRING,
     {
       ssl: true,
       tlsAllowInvalidCertificates: true, // Only for testing

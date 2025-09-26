@@ -38,7 +38,7 @@ authRouter.post("/signUp", async (req, res) => {
       about,
     });
     const saveduser = await user.save();
-    const token = await jwt.sign({ _id: user._id }, "secretkey", {
+    const token = await jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d", //expiry for jwt token
     });
     res.cookie("token", token, {
