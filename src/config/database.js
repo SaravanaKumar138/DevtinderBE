@@ -15,4 +15,5 @@ module.exports = connectDB;
 
 // userName: "DevtinderProject"
 // password: ":Dev%401234"
-
+//awsSecretAccessKey-yeNlm3z1Ug8e/xTmwC+DHrL1jGbIYV0TrZsqBAuL
+//awsaccesskey-AKIAW3RWMQYOZSYIWSWA

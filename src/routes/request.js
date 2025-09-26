@@ -8,6 +8,8 @@ const User = require("../models/user");
 
 const ConnectionRequest = require("../models/connectionRequest");
 
+const sendEmail = require("../utils/sendEmail");
+
 requestRouter.post("/send/:status/:toUserId", userAuth, async (req, res) => {
   try {
     const loggedInUser = req.user;
@@ -47,6 +49,8 @@ requestRouter.post("/send/:status/:toUserId", userAuth, async (req, res) => {
     });
     //saving to database
     await connectionRequest.save();
+    
+    const email = await sendEmail.run();
 
     res.json({
       message: `Connection Request ${status} by ${fromUserId.lastName}`,
