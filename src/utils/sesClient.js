@@ -6,8 +6,8 @@ const REGION = "ap-south-1";
 const sesClient = new SESClient({
   region: REGION,
   credentials: {
-    accessKeyId: "AKIAW3RWMQYOZSYIWSWA",
-    secretAccessKey: "yeNlm3z1Ug8e / xTmwC + DHrL1jGbIYV0TrZsqBAuL",
+    accessKeyId: process.env.SES_ACCESS_KEY,
+    secretAccessKey: process.env.SES_KEY,
   },
 });
 module.exports = sesClient;
