@@ -50,13 +50,13 @@ requestRouter.post("/send/:status/:toUserId", userAuth, async (req, res) => {
     //saving to database
     await connectionRequest.save();
     
-    const email = await sendEmail.run();
+    
 
     res.json({
       message: `Connection Request ${status} by ${fromUserId.lastName}`,
     });
   } catch (err) {
-    res.status(400).send(err.message);
+    res.status(401).send(err.message);
   }
 });
 

@@ -69,7 +69,7 @@ authRouter.post("/login", async (req, res) => {
     if (isPassValid) {
 
       const token = await jwt.sign({ _id: user._id }, "secretkey", {
-        expiresIn: "1d", //expiry for jwt token
+        expiresIn: "10d", //expiry for jwt token
       });
 
       res.cookie("token", token, {

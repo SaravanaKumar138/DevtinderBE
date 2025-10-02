@@ -4,11 +4,13 @@ const app = express();
 
 const cors = require("cors");
 
+const http = require("http");
+
 require("dotenv").config();
 
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
@@ -31,21 +33,27 @@ const requestRouter = require("./routes/request");
 
 const userRouter = require("./routes/user");
 
-app.use("/api/auth", authRouter);
-app.use("/api/profile", profileRouter);
-app.use("/api/request", requestRouter);
-app.use("/api/user", userRouter);
+const chatRouter = require("./routes/chat");
+
+const initializeSocket = require("./utils/socket");
+
+app.use("/auth", authRouter);
+app.use("/profile", profileRouter);
+app.use("/request", requestRouter);
+app.use("/user", userRouter);
+app.use("/chat", chatRouter);
+
+const server = http.createServer(app);
+
+initializeSocket(server);
 
 connectDB()
   .then(() => {
     console.log("DB connected");
-    app.listen(process.env.PORT, () => {
-      console.log("Server listening");
+    server.listen(process.env.PORT, () => {
+      console.log("Server listening ",process.env.PORT);
     });
   })
   .catch((err) => console.log(err));
 
 
-//export from the file 
-//import here like const requestrouter = require("./routes/auth.js");
-//app.use("/user", requestrouter);
