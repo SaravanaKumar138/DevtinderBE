@@ -1,6 +1,6 @@
 
 const memberShipAmount = {
-    "silver": 300,
+    "silver": 1,
     "gold": 500
 };
 
