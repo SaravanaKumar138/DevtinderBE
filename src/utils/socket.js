@@ -37,7 +37,7 @@ const initializeSocket = (server) => {
               });
               await chat.save();
               const now = new Date();
-              io.to(roomId).emit("messageRecieved", { firstName, text, timestamp: now.toLocaleTimeString() }); //sending message to the room
+              socket.to(roomId).emit("messageRecieved", { firstName, text, timestamp: now.toISOString() }); //sending message to the room
             }
             catch(err) {
               console.log(err);
