@@ -10,7 +10,11 @@ require("dotenv").config();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "https://devstinder.in",
+      "https://www.devstinder.in",
+      "http://localhost:5173",
+    ],
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
@@ -53,7 +57,7 @@ initializeSocket(server);
 connectDB()
   .then(() => {
     console.log("DB connected");
-    server.listen(process.env.PORT, () => {
+    server.listen(process.env.PORT, '0.0.0.0',() => {
       console.log("Server listening ",process.env.PORT);
     });
   })
