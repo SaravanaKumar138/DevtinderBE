@@ -41,7 +41,10 @@ const chatRouter = require("./routes/chat");
 
 const paymentRouter = require("./routes/payment");
 
+const matchingRouter = require("./routes/matching");
+
 const initializeSocket = require("./utils/socket");
+
 
 app.use("/auth", authRouter);
 app.use("/profile", profileRouter);
@@ -49,6 +52,7 @@ app.use("/request", requestRouter);
 app.use("/user", userRouter);
 app.use("/chat", chatRouter);
 app.use("/payment", paymentRouter);
+app.use("/matches", matchingRouter);
 
 const server = http.createServer(app);
 
@@ -57,7 +61,7 @@ initializeSocket(server);
 connectDB()
   .then(() => {
     console.log("DB connected");
-    server.listen(process.env.PORT, '0.0.0.0',() => {
+    server.listen(process.env.PORT,() => {
       console.log("Server listening ",process.env.PORT);
     });
   })

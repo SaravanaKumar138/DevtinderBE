@@ -34,6 +34,11 @@ const userSchema = mongoose.Schema(
       minlength: 5,
       trim: true,
     },
+    experience: {
+      type: Number,
+      default: 0,
+      max: 50,
+    },
     age: {
       type: String,
       min: 18,
@@ -46,11 +51,6 @@ const userSchema = mongoose.Schema(
           throw new Error("Not a valid gender");
         }
       },
-      //or you can write like this also
-      // enum: {
-      //   values: ["male", 'female', 'others'],
-      //   message: `{value} is not a valid gender type`
-      // },
       trim: true,
     },
     isPremium: {
