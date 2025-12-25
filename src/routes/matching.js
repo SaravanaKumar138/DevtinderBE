@@ -5,7 +5,7 @@ const { userAuth } = require("../middleware/auth");
 
 const matchingRouter = express.Router();
 
-matchingRouter.get("/", userAuth, async (req, res) => {
+matchingRouter.get("/match", userAuth, async (req, res) => {
   try {
     const { skills, experience } = req.query;
     console.log(skills, experience);
