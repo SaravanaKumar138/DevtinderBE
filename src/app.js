@@ -41,7 +41,7 @@ const chatRouter = require("./routes/chat");
 
 const paymentRouter = require("./routes/payment");
 
-const matchingRouter = require("./routes/matching");
+const matchingRouter = require("./routes/matches");
 
 const initializeSocket = require("./utils/socket");
 
