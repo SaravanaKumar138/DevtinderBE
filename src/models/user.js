@@ -40,7 +40,7 @@ const userSchema = mongoose.Schema(
       max: 50,
     },
     age: {
-      type: String,
+      type: Number,
       min: 18,
       trim: true,
     },
@@ -69,7 +69,7 @@ const userSchema = mongoose.Schema(
     },
     about: {
       type: String,
-      defalut: "This is default description",
+      default: "This is default description",
       trim: true,
     },
     skills: {
