@@ -45,41 +45,41 @@ paymentRouter.post("/create", userAuth, async (req, res) => {
   }
 });
 
-paymentRouter.post("/webhook", async (req, res) => {
-  try {
-  const signature = req.headers["x-razorpay-signature"];
+// paymentRouter.post("/webhook", async (req, res) => {
+//   try {
+//   const signature = req.headers["x-razorpay-signature"];
 
-  const isWebhookValid = validateWebhookSignature(
-    req.body, // ✅ RAW BODY
-    signature,
-    process.env.RAZORPAY_WEBHOOK_SECRET
-  );
-    if (!isWebhookValid) {
-      return res.status(400).send("Invalid signature");
-    }
+//   const isWebhookValid = validateWebhookSignature(
+//     req.body, // ✅ RAW BODY
+//     signature,
+//     process.env.RAZORPAY_WEBHOOK_SECRET
+//   );
+//     if (!isWebhookValid) {
+//       return res.status(400).send("Invalid signature");
+//     }
 
-    const paymentDetails = req.body.payload.payment.entity;
+//     const paymentDetails = req.body.payload.payment.entity;
 
-    console.log(paymentDetails);
+//     console.log(paymentDetails);
 
-    const payment = await Payment.findOne({ orderId: paymentDetails.order_id });
-    console.log(payment);
+//     const payment = await Payment.findOne({ orderId: paymentDetails.order_id });
+//     console.log(payment);
 
-    payment.status = paymentDetails.status;
-    await payment.save();
-    const user = await User.findOne({ _id: payment.userId });
-    user.isPremium = true;
-    user.memberShipType = paymentDetails.notes.membershipType;
-    await user.save();
-    // if (req.body.event === "payment.captured") {
-    // }
-    // if (req.body.event === "payment.failed") {
-    // }
-    return res.status(200).send("Webhook received");
-  } catch (err) {
-    res.status(500).send("Server Error");
-  }
-});
+//     payment.status = paymentDetails.status;
+//     await payment.save();
+//     const user = await User.findOne({ _id: payment.userId });
+//     user.isPremium = true;
+//     user.memberShipType = paymentDetails.notes.membershipType;
+//     await user.save();
+//     // if (req.body.event === "payment.captured") {
+//     // }
+//     // if (req.body.event === "payment.failed") {
+//     // }
+//     return res.status(200).send("Webhook received");
+//   } catch (err) {
+//     res.status(500).send("Server Error");
+//   }
+// });
 
 paymentRouter.get("/premium/verify", userAuth, async (req, res) => {
 try {
