@@ -39,6 +39,7 @@ paymentRouter.post("/create", userAuth, async (req, res) => {
     const savedPayment = await payment.save();
 
      res.json({ ...savedPayment.toJSON(), keyId: process.env.RAZORPAY_KEY_ID });
+    res.json({order});
   } catch (err) {
     res.status(500).send("Server Error");
   }
@@ -48,7 +49,7 @@ paymentRouter.post("/webhook", async (req, res) => {
   try {
     const isWebhookValid = validateWebhookSignature(
       JSON.stringify(req.body),
-      req.get["x-Razorpay-Signature"],
+      req.get("X-Razorpay-Signature"),
       process.env.RAZORPAY_WEBHOOK_SECRET
     );
     if (!isWebhookValid) {
