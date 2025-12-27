@@ -8,7 +8,6 @@ const matchingRouter = express.Router();
 matchingRouter.get("/match", userAuth, async (req, res) => {
   try {
     const { skills, experience } = req.query;
-    console.log(skills, experience);
     if (!skills) {
       return res.status(400).json({ message: "Skills required" });
     }
