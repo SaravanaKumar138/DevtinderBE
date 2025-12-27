@@ -12,7 +12,7 @@ matchingRouter.get("/match", userAuth, async (req, res) => {
       return res.status(400).json({ message: "Skills required" });
     }
     const skillsArray = skills.split(",").map((s) => s.trim().toLowerCase());
-    console.log(skillsArray);
+   
     const loggedInUser = req.user;
     const allUsers = await User.find();
 
