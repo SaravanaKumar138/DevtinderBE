@@ -1,10 +1,10 @@
-const User = require("../models/user");
-
 const express = require("express");
-const { userAuth } = require("../middleware/auth");
+const User = require("../models/user");
 const ConnectionRequest = require("../models/connectionRequest");
+const { userAuth } = require("../middleware/auth");
 
 const matchingRouter = express.Router();
+
 matchingRouter.get("/match", userAuth, async (req, res) => {
   try {
     const { skills } = req.query;
@@ -12,36 +12,43 @@ matchingRouter.get("/match", userAuth, async (req, res) => {
       return res.status(400).json({ message: "Skills required" });
     }
 
-    const skillsArray = skills.split(",").map((s) => s.trim().toLowerCase());
-
     const loggedInUser = req.user;
 
-    const allUsers = await User.find();
+    // normalize requested skills
+    const skillsArray = skills.split(",").map((s) => s.trim().toLowerCase());
 
-    const friendsOfLoggedInUser = await ConnectionRequest.find({
+    const friends = await ConnectionRequest.find({
       $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }],
-      status: "accepted",
+      status: { $in: ["accepted", "pending", "rejected"] },
     }).select("fromUserId toUserId -_id");
 
-    const friendsIds = new Set();
-    friendsOfLoggedInUser.forEach((conn) => {
-      friendsIds.add(conn.fromUserId.toString());
-      friendsIds.add(conn.toUserId.toString());
+    
+    const excludedIds = new Set();
+    friends.forEach((conn) => {
+      excludedIds.add(conn.fromUserId);
+      excludedIds.add(conn.toUserId);
     });
 
-  
-    friendsIds.add(loggedInUser._id.toString()); // what if the user has no friends
+    // always exclude self
+    excludedIds.add(loggedInUser._id); // user dont have friends
 
+    const candidateUsers = await User.find({
+      _id: { $nin: Array.from(excludedIds) },
+    });
+
+
+     
     const EXP_FACTOR = 4;
 
-    const matchedUsers = allUsers
-      .filter((user) => !friendsIds.has(user._id.toString()))
+    const matchedUsers = candidateUsers
       .map((user) => {
         const userSkills = (user.skills || []).map((s) => s.toLowerCase());
 
         const commonSkills = skillsArray.filter((skill) =>
           userSkills.includes(skill)
         );
+
+        if (commonSkills.length === 0) return null;
 
         const skillScore = (commonSkills.length / skillsArray.length) * 60;
 
@@ -53,23 +60,21 @@ matchingRouter.get("/match", userAuth, async (req, res) => {
           Math.min(expDifference * EXP_FACTOR, 40)
         );
 
-        const matchPercentage = Math.round(skillScore + experienceScore);
-
         return {
           ...user.toObject(),
-          matchPercentage,
+          matchPercentage: Math.round(skillScore + experienceScore),
           skillsMatch: commonSkills.length,
         };
       })
-      .filter((u) => u.skillsMatch > 0)
+      .filter(Boolean)
       .sort((a, b) => b.matchPercentage - a.matchPercentage);
 
-    res.status(200).json({
-      message: "All users received",
+    return res.status(200).json({
+      message: "Matched users fetched successfully",
       data: matchedUsers,
     });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 });
 
