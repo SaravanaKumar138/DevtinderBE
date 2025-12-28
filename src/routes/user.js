@@ -15,7 +15,7 @@ userRouter.get("/requests/received", userAuth, async (req, res) => {
     const connectionRequest = await ConnectionRequest.find({
       toUserId: loggedInUser._id,
       status: "interested",
-    }).populate("fromUserId", ["firstName", "lastName", "photoUrl", "age", "gender"]);
+    }).populate("fromUserId", ["firstName", "lastName", "photoUrl", "age", "gender", "role", "experience"]);
     // if (!connectionRequest) {
     //   return res.status(400).json({ message: "Connection Request not found" });
     // }
@@ -108,7 +108,7 @@ userRouter.get("/feed", userAuth, async (req, res) => {
         { _id: { $nin: loggedInUser._id } },
       ],
     })
-      .select("firstName lastName photoUrl about skills age")
+      .select("firstName lastName photoUrl about skills age role experience")
       .skip(skip)
       .limit(limit);
 
