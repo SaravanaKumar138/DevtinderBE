@@ -64,6 +64,7 @@ requestRouter.post("/review/:status/:requestId", userAuth, async (req, res) => {
   try {
     const loggedInUser = req.user;
     //validate the status
+    
     const { status, requestId } = req.params;
 
     const allowedStatus = ["accepted", "rejected"];
