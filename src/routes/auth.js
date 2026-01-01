@@ -72,10 +72,12 @@ authRouter.post("/login", async (req, res) => {
         expiresIn: "10d", //expiry for jwt token
       });
 
-      res.cookie("token", token, {
-        httpOnly: true,
-        expires: new Date(Date.now() + 8 * 3400000), //expiry for cookie
-      });
+     res.cookie("token", token, {
+       httpOnly: true,
+       secure: true, // REQUIRED on HTTPS
+       sameSite: "None", // REQUIRED for cross-site
+       expires: new Date(Date.now() + 8 * 24 * 60 * 60 * 1000),
+     });
       
       res.send(user);
     } else {
