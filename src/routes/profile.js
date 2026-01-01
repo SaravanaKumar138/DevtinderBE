@@ -21,8 +21,8 @@ profileRouter.get("/view", userAuth, async (req, res) => {
 
 profileRouter.patch("/edit", userAuth, async (req, res) => {
   try {
-    console.log(req.body);
-    if (!validateProfileEdit(req)) throw new Error("Cannot Edit Profile");
+   
+   // if (!validateProfileEdit(req)) throw new Error("Cannot Edit Profile");
 
     const loggedInUser = req.user; //already inserted in userAuth
 
