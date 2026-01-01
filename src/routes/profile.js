@@ -22,7 +22,7 @@ profileRouter.get("/view", userAuth, async (req, res) => {
 profileRouter.patch("/edit", userAuth, async (req, res) => {
   try {
    
-   // if (!validateProfileEdit(req)) throw new Error("Cannot Edit Profile");
+   
 
     const loggedInUser = req.user; //already inserted in userAuth
 
@@ -35,9 +35,9 @@ profileRouter.patch("/edit", userAuth, async (req, res) => {
       message: `${loggedInUser.lastName} your profile updated successfully`,
       data: loggedInUser,
     });
-    
+
   } catch (err) {
-    res.status(400).send(err.message);
+    res.status(500).send(err.message);
   }
 });
 
