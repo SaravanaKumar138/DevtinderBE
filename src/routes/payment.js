@@ -48,7 +48,7 @@ paymentRouter.post("/create",userAuth, async(req, res) =>  {
 paymentRouter.post("/webhook", async (req, res) => {
   try {
     const isWebHookValid = validateWebhookSignature(
-      JSON.stringify(req.body),
+      req.body,
       req.headers["x-razorpay-signature"],
       process.env.RAZORPAY_WEBHOOK_SECRET
     );
