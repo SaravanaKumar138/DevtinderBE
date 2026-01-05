@@ -24,6 +24,8 @@ app.use(express.json());
 
 const connectDB = require("./config/database");
 
+const { connectRedis} = require("./config/redis");
+
 const cookieParser = require("cookie-parser");
 
 
@@ -59,13 +61,34 @@ const server = http.createServer(app);
 
 initializeSocket(server);
 
-connectDB()
-  .then(() => {
+
+async function startServer() {
+  try {
+    await connectDB();
     console.log("DB connected");
+    await connectRedis();
+    console.log("Redis connected");
     server.listen(process.env.PORT, () => {
-      console.log("Server listening ",process.env.PORT);
+      console.log("Server listening ", process.env.PORT);
     });
-  })
-  .catch((err) => console.log(err));
+  }
+  catch (err) {
+    console.log("Error starting server:", err);
+  }
+};
+
+startServer();
+
+
+// connectDB()
+//   .then(() => {
+//     console.log("DB connected");
+//     server.listen(process.env.PORT, () => {
+//       console.log("Server listening ",process.env.PORT);
+//     });
+//   })
+//   .catch((err) => console.log(err));
+
+
 
 
