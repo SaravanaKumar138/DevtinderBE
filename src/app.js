@@ -73,8 +73,8 @@ initializeSocket(server);
 const startServer = async () => {
   await connectRedis(); // Ensure Redis is connected before server starts
   await connectDB();
-  const server = app.listen(5000, () => {
-    console.log("Server running on port 5000");
+  const server = app.listen(process.env.PORT, () => {
+    console.log("Server running on port "+process.env.PORT);
   });
 
   initializeSocket(server);
