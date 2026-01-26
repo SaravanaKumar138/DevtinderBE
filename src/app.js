@@ -61,14 +61,14 @@ const server = http.createServer(app);
 
 initializeSocket(server);
 
-connectDB()
-  .then(() => {
-    console.log("DB connected");
-    server.listen(process.env.PORT, () => {
-      console.log("Server listening ",process.env.PORT);
-    });
-  })
-  .catch((err) => console.log(err));
+// connectDB()
+//   .then(() => {
+//     console.log("DB connected");
+//     server.listen(process.env.PORT, () => {
+//       console.log("Server listening ",process.env.PORT);
+//     });
+//   })
+//   .catch((err) => console.log(err));
 
 const startServer = async () => {
   await connectRedis(); // Ensure Redis is connected before server starts
