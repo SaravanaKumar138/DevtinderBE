@@ -61,34 +61,25 @@ const server = http.createServer(app);
 
 initializeSocket(server);
 
-
-async function startServer() {
-  try {
-    await connectDB();
+connectDB()
+  .then(() => {
     console.log("DB connected");
-    await connectRedis();
-    console.log("Redis connected");
     server.listen(process.env.PORT, () => {
-      console.log("Server listening ", process.env.PORT);
+      console.log("Server listening ",process.env.PORT);
     });
-  }
-  catch (err) {
-    console.log("Error starting server:", err);
-  }
+  })
+  .catch((err) => console.log(err));
+
+const startServer = async () => {
+  await connectRedis(); // Ensure Redis is connected before server starts
+  await connectDB();
+  const server = app.listen(5000, () => {
+    console.log("Server running on port 5000");
+  });
+
+  initializeSocket(server);
 };
 
 startServer();
-
-
-// connectDB()
-//   .then(() => {
-//     console.log("DB connected");
-//     server.listen(process.env.PORT, () => {
-//       console.log("Server listening ",process.env.PORT);
-//     });
-//   })
-//   .catch((err) => console.log(err));
-
-
 
 
