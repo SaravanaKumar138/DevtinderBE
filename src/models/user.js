@@ -25,7 +25,7 @@ const userSchema = mongoose.Schema(
       lowercase: true,
       trim: true,
       required: true,
-      unique: true,//if field is unique mongodb automatically creates index for it
+      unique: true, //if field is unique mongodb automatically creates index for it
       trim: true,
     },
     password: {
@@ -64,7 +64,7 @@ const userSchema = mongoose.Schema(
     memberShipType: {
       type: String,
     },
-    
+
     photoUrl: {
       type: String,
       default:
@@ -76,14 +76,22 @@ const userSchema = mongoose.Schema(
       default: "This is default description",
       trim: true,
     },
-    skills: 
-       [{
-        name: String, required: true, trim: true,
-        level : {type: String, enum: ['beginner', 'intermediate', 'advanced'], default: 'beginner'}
-      }]
-    ,
+    skills: [
+      {
+        name: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        level: {
+          type: String,
+          enum: ["beginner", "intermediate", "advanced"],
+          default: "beginner",
+        },
+      },
+    ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("User", userSchema);
