@@ -76,10 +76,12 @@ const userSchema = mongoose.Schema(
       default: "This is default description",
       trim: true,
     },
-    skills: {
-      type: [String],
-      maxlength: 100,
-    },
+    skills: 
+       [{
+        name: String, required: true, trim: true,
+        level : {type: String, enum: ['beginner', 'intermediate', 'advanced'], default: 'beginner'}
+      }]
+    ,
   },
   { timestamps: true }
 );
