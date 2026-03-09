@@ -30,12 +30,13 @@ requestRouter.post("/send/:status/:toUserId", userAuth, async (req, res) => {
       return res.status(400).json({ message: "User not found" });
     }
 
-    //finding exixting connection request
+    // Reject only if users are already friends (accepted connection exists).
     const existingConnectionRequest = await ConnectionRequest.findOne({
       $or: [
         { fromUserId, toUserId },
         { fromUserId: toUserId, toUserId: fromUserId },
       ],
+      status: "accepted",
     });
 
     if (existingConnectionRequest) {
