@@ -11,6 +11,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
+const { normalizeSkillsInput } = require("../utils/skills");
 
 authRouter.post("/signUp", async (req, res) => {
   //validate the data
@@ -27,12 +28,14 @@ authRouter.post("/signUp", async (req, res) => {
       about,
     } = req.body;
     const encryptedpassword = await bcrypt.hash(password, 10);
+    const normalizedSkills = normalizeSkillsInput(skills);
+
     const user = new User({
       firstName,
       lastName,
       emailId,
       password: encryptedpassword,
-      skills,
+      skills: normalizedSkills,
       age,
       gender,
       about,

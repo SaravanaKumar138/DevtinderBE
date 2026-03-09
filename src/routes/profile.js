@@ -9,6 +9,7 @@ const { validateProfileEdit } = require("../utils/validate");
 
 const upload = require("../middleware/upload");
 const uploadToS3 = require("../utils/s3upload");
+const { normalizeSkillsInput } = require("../utils/skills");
 
 const validator = require("validator");
 
@@ -27,6 +28,9 @@ profileRouter.patch("/edit", userAuth, async (req, res) => {
   try {
    
     const loggedInUser = req.user; //already inserted in userAuth
+    if (Object.prototype.hasOwnProperty.call(req.body, "skills")) {
+      req.body.skills = normalizeSkillsInput(req.body.skills);
+    }
 
     Object.keys(req.body).forEach((key) => (loggedInUser[key] = req.body[key]));
 

@@ -53,7 +53,7 @@ requestRouter.post("/send/:status/:toUserId", userAuth, async (req, res) => {
     
 
     res.json({
-      message: `Connection Request ${status} by ${fromUserId.lastName}`,
+      message: `Connection Request ${status} by ${loggedInUser.lastName}`,
     });
   } catch (err) {
     res.status(401).send(err.message);
