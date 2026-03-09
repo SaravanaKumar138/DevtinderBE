@@ -4,7 +4,20 @@ const normalizeSkillName = (value = "") => value.toString().trim();
 
 const normalizeSkillsInput = (skills) => {
   if (typeof skills === "string") {
-    skills = skills.split(",");
+    const trimmedSkills = skills.trim();
+
+    // Accept JSON-string payloads like:
+    // '[{"name":"java","level":"beginner"}]'
+    if (trimmedSkills.startsWith("[") && trimmedSkills.endsWith("]")) {
+      try {
+        const parsed = JSON.parse(trimmedSkills);
+        skills = parsed;
+      } catch (err) {
+        skills = trimmedSkills.split(",");
+      }
+    } else {
+      skills = trimmedSkills.split(",");
+    }
   }
 
   if (!Array.isArray(skills)) return [];
